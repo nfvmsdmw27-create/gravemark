@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"/>
+  <meta name="theme-color" content="#0b0b14"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Gravemark"/>
+  <meta name="description" content="A dark fantasy roguelike. Every death leaves a mark."/>
+
+  <title>Gravemark</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json"/>
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png"/>
+  <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png"/>
+
+  <!-- Prevent text selection and callouts on mobile -->
+  <style>
+    * { -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
+    html, body { margin: 0; padding: 0; background: #0b0b14; height: 100%; overflow: hidden; }
+    #root { height: 100%; }
+    /* Safe area for notched phones */
+    #root > div { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+  </style>
+
+  <!-- React + Babel (for development — replace with build in production) -->
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="/App.jsx" data-type="module"></script>
+  <script type="text/babel">
+    // Mount the app
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(React.createElement(Game));
+  </script>
+
+  <!-- Service Worker registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('SW registered'))
+          .catch(err => console.log('SW failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
